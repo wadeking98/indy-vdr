@@ -223,6 +223,7 @@ pub async fn perform_ledger_request<T: Pool>(
 
     if is_read_req {
         if let Some(cache) = cache_opt.clone() {
+            println!("VDR: cache.get({:?})", cache_key);
             if let Some((response, meta)) = cache.get(&cache_key) {
                 return Ok((RequestResult::Reply(response), meta));
             }
@@ -240,7 +241,9 @@ pub async fn perform_ledger_request<T: Pool>(
                 }
             }
             if let Some(cache) = cache_opt {
+                println!("VDR: cache.insert({:?})", cache_key);
                 cache.insert(cache_key, (response.to_string(), meta.clone()), None);
+                println!("VDR: successfully inserted into cache");
             }
         }
     }

@@ -37,7 +37,10 @@ impl<K: Display + 'static, V: 'static> Cache<K, V> {
     pub fn get(&self, key: &K) -> Option<V> {
         let full_key = self.full_key(key);
         if let Some(storage) = self.storage.read().ok() {
-            return storage.get(&full_key);
+            println!("VDR: Cache::get: full_key: {}", full_key);
+            let res =  storage.get(&full_key);
+            println!("VDR: Cache::get: success");
+            return res;
         }
         None
     }
@@ -53,7 +56,10 @@ impl<K: Display + 'static, V: 'static> Cache<K, V> {
     pub fn insert(&self, key: K, value: V, custom_exp_offset: Option<u128>) -> Option<V> {
         let full_key = self.full_key(&key);
         if let Some(storage) = self.storage.write().ok() {
-            return storage.insert(full_key, value, custom_exp_offset);
+            println!("VDR: Cache::insert: full_key: {}", full_key);
+            let res = storage.insert(full_key, value, custom_exp_offset);
+            println!("VDR: Cache::insert: success");
+            return res;
         }
         None
     }
